@@ -9,7 +9,7 @@ class UserService {
     
     const hashPassword = bcrypt.hash(password, 3)
     const activationLink = uuid.v4()
-    pool.query('INSERT INTO users (email, password, activation_link) VALUES ($1, $2, $3) RETURNING *', [email, hashPassword, activationLink])
+    await pool.query('INSERT INTO users (email, password, activation_link) VALUES ($1, $2, $3) RETURNING *', [email, hashPassword, activationLink])
   }
 
   // async login(req, res, next) {
@@ -36,13 +36,11 @@ class UserService {
   //   }
   // }
 
-  // async getUsers(req, res, next) {
-  //   try {
-  //     res.json([1,2,3])
-  //   } catch (error) {
-      
-  //   }
-  // }
+  async getUsers() {
+    const users = (await pool.query('SELECT * FROM users')).rows
+    console.log(users)
+    return users
+  }
 }
 
 module.exports = new UserService()
