@@ -4,6 +4,7 @@ const uuid = require('uuid')
 
 class UserService {
   async registration(email, password) {
+    console.log(email, password)
     const user = await pool.query('SELECT * FROM users WHERE email=$1', [email])
     if (user.rows[0]) throw new Error(`Пользователь с email ${email} уже существует`)
     
